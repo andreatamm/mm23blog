@@ -18,6 +18,9 @@ Route::get('/category/{category}', [PublicController::class, 'category'])->name(
 // Route::get('/admin/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
 // Route::put('/admin/posts/{post}', [PostController::class, 'update'])->name('posts.update');
 // Route::delete('/admin/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+use App\Http\Controllers\UserController;
+
+Route::get('/user/{user}', [UserController::class, 'show'])->name('user.show');
 
 
 
