@@ -1,27 +1,56 @@
-@extends('partials.layout')
-@section('title', 'Home page')
+@extends('layouts.app')
+
 @section('content')
-    <div class="card bg-base-300">
+<div class="max-w-2xl mx-auto mt-10">
+    <div class="card bg-base-100 shadow-xl">
         <div class="card-body">
-            <form action="{{route('posts.update', ['post' => $post])}}" method="POST">
+            <h2 class="card-title">Profile Settings</h2>
+
+            {{-- Success message --}}
+            @if (session('status') === 'profile-updated')
+                <div class="alert alert-success my-4">
+                    Profile updated successfully.
+                </div>
+            @endif
+
+            <form method="POST" action="{{ route('profile.update') }}" class="space-y-4">
                 @csrf
-                @method('PUT')
-                <fieldset class="fieldset">
-                    <legend class="fieldset-legend">Title</legend>
-                    <input value="{{ old('title') ?? $post->title }}" name="title" type="text" class="input w-full @error('title') input-error @enderror" placeholder="Title" />
-                    @error('title')
-                        <p class="label text-error">{{ $message }}</p>
+                @method('PATCH')
+
+                <div>
+                    <label class="label">
+                        <span class="label-text">Name</span>
+                    </label>
+                    <input type="text" name="name" value="{{ old('name', auth()->user()->name) }}" class="input input-bordered w-full" required>
+                    @error('name')
+                        <p class="text-error text-sm mt-1">{{ $message }}</p>
                     @enderror
-                </fieldset>
-                <fieldset class="fieldset">
-                    <legend class="fieldset-legend">Content</legend>
-                    <textarea name="body" class="textarea h-96 w-full @error('body') textarea-error @enderror" placeholder="Write something cool...">{{ old('body') ?? $post->body }}</textarea>
-                    @error('body')
-                        <p class="label text-error">{{ $message }}</p>
+                </div>
+
+                <div>
+                    <label class="label">
+                        <span class="label-text">Email</span>
+                    </label>
+                    <input type="email" name="email" value="{{ old('email', auth()->user()->email) }}" class="input input-bordered w-full" required>
+                    @error('email')
+                        <p class="text-error text-sm mt-1">{{ $message }}</p>
                     @enderror
-                </fieldset>
-                <button class="btn btn-primary">Update</button>
+                </div>
+
+                <div class="flex justify-end space-x-2">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a href="{{ route('dashboard') }}" class="btn btn-ghost">Cancel</a>
+                </div>
+            </form>
+
+            <div class="divider"></div>
+
+            <form method="POST" action="{{ route('profile.destroy') }}" onsubmit="return confirm('Are you sure you want to delete your account?');">
+                @csrf
+                @method('DELETE')
+                <button class="btn btn-error btn-outline w-full">Delete Account</button>
             </form>
         </div>
     </div>
+</div>
 @endsection
