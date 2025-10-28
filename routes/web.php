@@ -5,6 +5,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\TagController;
 
 Route::get('/', [PublicController::class, 'index'])->name('home');
 Route::get('/page1', [PublicController::class, 'page1'])->name('page1');
@@ -22,7 +23,9 @@ use App\Http\Controllers\UserController;
 
 Route::get('/user/{user}', [UserController::class, 'show'])->name('user.show');
 
-
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'is_admin'])->group(function () {
+    Route::resource('tags', TagController::class);
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');

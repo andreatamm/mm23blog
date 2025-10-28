@@ -33,3 +33,15 @@
         </div>
     </div>
 @endsection
+<div>
+    <label class="label">
+        <span class="label-text">Tags</span>
+    </label>
+    <select name="tags[]" multiple class="select select-bordered w-full">
+        @foreach($tags as $tag)
+            <option value="{{ $tag->id }}" @selected(in_array($tag->id, old('tags', $post->tags->pluck('id')->toArray() ?? [])))>
+                {{ $tag->name }}
+            </option>
+        @endforeach
+    </select>
+</div>
