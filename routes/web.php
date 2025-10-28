@@ -35,4 +35,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::prefix('admin')
+     ->name('admin.')
+     ->middleware(['auth','is_admin'])
+     ->group(function () {
+         Route::resource('posts', \App\Http\Controllers\Admin\PostController::class);
+     });
+
 require __DIR__.'/auth.php';
